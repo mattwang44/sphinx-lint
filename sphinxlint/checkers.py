@@ -515,7 +515,7 @@ def check_dangling_hyphen(file, lines, options):
             yield lno + 1, "Line ends with dangling hyphen"
 
 
-@checker(".rst", ".po", rst_only=False, enabled=False)
+@checker(".rst", ".po", rst_only=False, enabled=True)
 def check_unnecessary_parentheses(filename, lines, options):
     """Check for unnecessary parentheses in :func: and :meth: roles.
 

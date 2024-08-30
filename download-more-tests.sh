@@ -20,15 +20,15 @@
 # Yes the following comment **is** the list of repos to download, you
 # can edit it.
 
+# https://github.com/mattwang44/pandas doc
+# https://github.com/python/cpython Doc --enable default-role
+# https://github.com/mattwang44/sphinx doc --enable line-too-long --max-line-length 85
 # https://github.com/jazzband/django-oauth-toolkit docs
 # https://github.com/neo4j/neo4j-python-driver docs
-# https://github.com/pandas-dev/pandas doc
 # https://github.com/python/peps . --disable=trailing-whitespace
-# https://github.com/python/cpython Doc --enable default-role
 # https://github.com/python/devguide/ . --enable default-role
 # https://github.com/spyder-ide/spyder-docs doc --enable all --disable line-too-long
 # https://github.com/sympy/sympy doc
-# https://github.com/sphinx-doc/sphinx doc --enable line-too-long --max-line-length 85
 # https://github.com/python/python-docs-fr . --enable all --disable line-too-long
 
 grep '^# https://' "$0" |
@@ -37,11 +37,17 @@ grep '^# https://' "$0" |
         name="$(basename "$repo")"
         target="tests/fixtures/friends/$name"
         rm -fr "$target"
+
+        branch_option=""
+        if echo "$repo" | grep -q "mattwang44"; then
+            branch_option="-b fix-unnecessary-parentheses-in-rst-content"
+        fi
+
         if [ "$directory" = "." ]
         then
-            git clone --depth 1 "$repo" "tests/fixtures/friends/$name"
+            git clone --depth 1 $branch_option "$repo" "tests/fixtures/friends/$name"
         else
-            git clone --depth 1 --sparse --filter=blob:none "$repo" "tests/fixtures/friends/$name" &&
+            git clone --depth 1 --sparse --filter=blob:none $branch_option "$repo" "tests/fixtures/friends/$name" &&
                 (
                     cd "tests/fixtures/friends/$name" || exit
                     rm *  # Removes files at root of repo (READMEs, conftest.py, ...)
